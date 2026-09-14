@@ -10,9 +10,9 @@ ExtensionUtility::configurePlugin(
     'TxCalender',
     'List',
     [
-        EventController::class => 'list, filter, show, exportIcal',
+        EventController::class => ['list', 'filter', 'show', 'exportIcal'],
     ],
     [
-        EventController::class => 'list, filter',
+        EventController::class => ['list', 'filter'],
     ]
 );

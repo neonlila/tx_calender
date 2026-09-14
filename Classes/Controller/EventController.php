@@ -4,19 +4,29 @@ namespace Neon\TxCalender\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Extbase\Domain\Repository\CategoryRepository;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Neon\TxCalender\Domain\Repository\EventRepository;
 
 class EventController extends ActionController {
     public function __construct(
         private readonly EventRepository $eventRepository,
-        private readonly CategoryRepository $categoryRepository
+        private readonly ConnectionPool $connectionPool
     ) {}
 
-    public function listAction(): ResponseInterface
-    {
-        $categories = $this->categoryRepository->findAll();
+   public function listAction(): ResponseInterface {
+        // Query sys_category directly via QueryBuilder
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_category');
+        $categories = $queryBuilder
+            ->select('uid', 'title')
+            ->from('sys_category')
+            ->where(
+                $queryBuilder->expr()->eq('sys_language_uid', 0)
+            )
+            ->orderBy('title', 'ASC')
+            ->executeQuery()
+            ->fetchAllAssociative();
+
         $this->view->assign('categories', $categories);
         return $this->htmlResponse();
     }
@@ -29,7 +39,6 @@ class EventController extends ActionController {
         $start = $startDate ? new \DateTime($startDate) : null;
         $end = $endDate ? new \DateTime($endDate) : null;
 
-        // Ensure category IDs are integers
         $categoryIds = array_map('intval', array_filter($categories));
 
         $events = $this->eventRepository->findByFilter($start, $end, $categoryIds);

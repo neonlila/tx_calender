@@ -1,0 +1,14 @@
+mod.wizards.newContentElement.wizardItems.plugins {
+    elements {
+        txcalender_list {
+            iconIdentifier = content-plugin
+            title = Event List
+            description = Displays events with filter options
+            tt_content_defValues {
+                CType = list
+                list_type = txcalender_list
+            }
+        }
+    }
+    show := addToList(txcalender_list)
+}
