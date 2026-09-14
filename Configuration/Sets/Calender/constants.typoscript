@@ -1,0 +1,6 @@
+plugin.tx_calender {
+    persistence {
+        # cat=plugin.tx_calender/file; type=int+; label=Storage Folder PID: Page ID where event records are stored
+        storagePid = 15
+    }
+}

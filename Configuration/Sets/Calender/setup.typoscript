@@ -1,0 +1,19 @@
+plugin.tx_calender {
+    view {
+        templateRootPaths {
+            10 = EXT:tx_calender/Resources/Private/Templates/
+        }
+        partialRootPaths {
+            10 = EXT:tx_calender/Resources/Private/Partials/
+        }
+        layoutRootPaths {
+            10 = EXT:tx_calender/Resources/Private/Layouts/
+        }
+    }
+    persistence {
+        storagePid = {$plugin.tx_calender.persistence.storagePid}
+    }
+    settings {
+        itemsPerPage = 15
+    }
+}
