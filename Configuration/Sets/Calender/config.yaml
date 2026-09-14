@@ -1,0 +1,10 @@
+# .. name is how you install it with composer | composer req neon/tx-calender
+name: 'neon/tx-calender'
+label: 'Team Member'
+# ... define your dependencies
+dependencies:
+  - typo3/fluid-styled-content
+  - typo3/fluid-styled-content-css
+
+settings:
+  # ... rest of your settings

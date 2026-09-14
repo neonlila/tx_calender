@@ -1,0 +1,159 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<div class="tx-eventcal"
+     x-data="eventFilter('{f:uri.action(action: \'filter\', pageType: 0)}')"
+     x-init="init()">
+
+    <!-- Filter Form -->
+    <form @submit.prevent="fetchEvents()" class="filter-form">
+        <div class="form-group">
+            <label for="startDate">From:</label>
+            <input type="date" id="startDate" x-model="startDate" @change="fetchEvents()" />
+        </div>
+
+        <div class="form-group">
+            <label for="endDate">To:</label>
+            <input type="date" id="endDate" x-model="endDate" @change="fetchEvents()" />
+        </div>
+
+        <!-- Category Checkboxes -->
+        <fieldset class="form-group">
+            <legend>Categories</legend>
+            <f:for each="{categories}" as="category">
+                <label class="checkbox-label">
+                    <input type="checkbox"
+                           value="{category.uid}"
+                           x-model="selectedCategories"
+                           @change="fetchEvents()" />
+                    {category.title}
+                </label>
+            </f:for>
+        </fieldset>
+
+        <button type="button" @click="resetFilters()">Reset all</button>
+    </form>
+
+    <!-- Results List -->
+    <div class="event-list">
+        <template x-for="event in events" :key="event.uid">
+            <article class="event-card">
+                <h3 x-text="event.title"></h3>
+                <p><time :datetime="event.startDateIso" x-text="event.startDate"></time></p>
+            </article>
+        </template>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div x-show="loading" class="loading-spinner">
+        Loading events...
+    </div>
+
+    <!-- Empty State -->
+    <template x-if="!loading && events.length === 0">
+        <p class="no-results">No events found for the selected date range.</p>
+    </template>
+
+    <!-- Asynchronous Results Grid -->
+    <div x-show="!loading" class="event-list">
+        <template x-for="event in events" :key="event.uid">
+            <article class="event-card">
+                <h3 x-text="event.title"></h3>
+                <p>
+                    <time :datetime="event.startDateIso" x-text="event.startDate"></time>
+                </p>
+                <a :href="'{f:uri.action(action: \'exportIcal\')}?tx_eventcal_list%5Bevent%5D=' + event.uid" 
+                   class="btn-ical">
+                    Download .ics
+                </a>
+            </article>
+        </template>
+    </div>
+</div>
+
+<div class="tx-eventcal" data-default-view="{settings.defaultView}">
+    <form method="get" action="{f:uri.action(action: 'list')}">
+        <label for="startDate">From:</label>
+        <input type="date" id="startDate" name="tx_eventcal_list[startDate]" value="{f:format.date(date: startDate, format: 'Y-m-d')}" />
+
+        <label for="endDate">To:</label>
+        <input type="date" id="endDate" name="tx_eventcal_list[endDate]" value="{f:format.date(date: endDate, format: 'Y-m-d')}" />
+
+        <button type="submit">Filter</button>
+    </form>
+
+    <div class="event-list">
+        <f:for each="{events}" as="event">
+            <article class="event-card">
+                <h3>{event.title}</h3>
+                <p>
+                    <time datetime="{event.startDate -> f:format.date(format: 'c')}">
+                        {event.startDate -> f:format.date(format: 'd.m.Y H:i')}
+                    </time>
+                </p>
+                <f:link.action action="exportIcal" arguments="{event: event.uid}" class="btn-ical">
+                    Download .ics
+                </f:link.action>
+            </article>
+        </f:for>
+    </div>
+</div>
+
+
+<!-- Inline JavaScript or load via AssetCollector -->
+<f:asset.script identifier="eventcal-alpine-app">
+document.addEventListener('alpine:init', () => {
+    Alpine.data('eventFilter', (endpointUrl) => ({
+        endpointUrl: endpointUrl,
+        startDate: '',
+        endDate: '',
+        selectedCategories: [],
+        events: [],
+        loading: false,
+
+        async init() {
+            await this.fetchEvents();
+        },
+
+        async fetchEvents() {
+            this.loading = true;
+            const params = new URLSearchParams();
+
+            if (this.startDate) {
+                params.append('tx_eventcal_list[startDate]', this.startDate);
+            }
+            if (this.endDate) {
+                params.append('tx_eventcal_list[endDate]', this.endDate);
+            }
+
+            // Append each selected category array item
+            this.selectedCategories.forEach(catId => {
+                params.append('tx_eventcal_list[categories][]', catId);
+            });
+
+            const url = `${this.endpointUrl}&${params.toString()}`;
+
+            try {
+                const response = await fetch(url, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+                const result = await response.json();
+                if (result.success) {
+                    this.events = result.events;
+                }
+            } catch (error) {
+                console.error('Failed to fetch events:', error);
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        resetFilters() {
+            this.startDate = '';
+            this.endDate = '';
+            this.selectedCategories = [];
+            this.fetchEvents();
+        }
+    }));
+});
+</f:asset.script>
+</html>

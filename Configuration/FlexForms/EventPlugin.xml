@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+
+<T3FlexForms>
+    <sheets>
+        <sDEF>
+            <ROOT>
+                <TCEforms>
+                    <sheetTitle>Settings</sheetTitle>
+                </TCEforms>
+                <type>array</type>
+                <el>
+                    <settings.itemsPerPage>
+                        <TCEforms>
+                            <label>Items per Page</label>
+                            <config>
+                                <type>number</type>
+                                <default>10</default>
+                            </config>
+                        </TCEforms>
+                    </settings.itemsPerPage>
+                    <settings.defaultView>
+                        <TCEforms>
+                            <label>Default View</label>
+                            <config>
+                                <type>select</type>
+                                <renderType>selectSingle</renderType>
+                                <items>
+                                    <numIndex index="0">
+                                        <label>List</label>
+                                        <value>list</value>
+                                    </numIndex>
+                                    <numIndex index="1">
+                                        <label>Grid</label>
+                                        <value>grid</value>
+                                    </numIndex>
+                                </items>
+                            </config>
+                        </TCEforms>
+                    </settings.defaultView>
+                </el>
+            </ROOT>
+        </sDEF>
+    </sheets>
+</T3FlexForms>
