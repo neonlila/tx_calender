@@ -67,8 +67,8 @@ return [
 
 // Make the event table categorizable
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable(
-    'eventcal',
-    'tx_eventcal_domain_model_event',
+    'TxCalender',
+    'tx_calender_domain_model_event',
     'categories',
     [
         'label' => 'Categories',

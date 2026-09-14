@@ -1,0 +1,23 @@
+styles:
+  templates:
+    layoutRootPath: 'EXT:tx_calender/Resources/Private/ContentElements/Layouts/'
+    partialRootPath: 'EXT:tx_calender/Resources/Private/ContentElements/Partials/'
+    templateRootPath: 'EXT:tx_calender/Resources/Private/ContentElements/Templates/'
+
+page:
+  pageview:
+    paths: 'EXT:tx_calender/Resources/Private/PageView/'
+
+  meta:
+    viewport: 'width=device-width, initial-scale=1'
+    robots: 'index,follow'
+    apple-mobile-web-app-capable: 'no'
+    compatible: 'IE=edge'
+
+config:
+  no_cache: '0'
+  removeDefaultJS: '0'
+  admPanel: '1'
+  prefixLocalAnchors: 'all'
+  headerComment: 'build by kristina wiemann'
+  sendCacheHeaders: '1'
