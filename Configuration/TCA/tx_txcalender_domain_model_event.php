@@ -48,6 +48,40 @@ return [
                 'type' => 'input',
             ],
         ],
+        'photo' => [
+            'exclude' => false,
+            'label' => 'Event Photo',
+            'config' => [
+                'type' => 'file',
+                'maxitems' => 1,
+                'allowed' => 'common-image-types',
+                'overrideChildTca' => [
+                    'types' => [
+                       '2' => [ // 2 corresponds to FileType::IMAGE->value
+                            'showitem' => 'crop, --palette--;;filePalette',
+                        ],
+                    ],
+                    'columns' => [
+                        'crop' => [
+                            'config' => [
+                                'cropVariants' => [
+                                    'default' => [
+                                        'title' => 'Format Crop',
+                                        'allowedAspectRatios' => [
+                                            '16:9' => [
+                                                'title' => '16:9',
+                                                'value' => 1.7777777777778,
+                                            ],
+                                        ],
+                                        'selectedRatio' => '16:9',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
         'start_date' => [
             'label' => 'Start Date/Time',
             'config' => [
@@ -83,7 +117,7 @@ return [
         ],
     ],
     'types' => [
-        '0' => ['showitem' => 'title, start_date, end_date, is_recurring, recurrence_type, teaser, description, location'],
+        '0' => ['showitem' => 'title, start_date, end_date, is_recurring, recurrence_type, teaser, description, location, photo'],
     ],
 ];
 

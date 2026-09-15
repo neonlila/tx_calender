@@ -84,6 +84,11 @@
     <div class="event-list">
         <f:for each="{events}" as="event">
             <article class="event-card">
+                <f:debug>{event}</f:debug>
+                <f:if condition="{event.photo}">
+                    <f:image image="{event.photo}" cropVariant="default" width="400c" height="250c" class="card-img-top img-fluid" alt="{event.title}" />
+                </f:if>
+                
                 <h3>{event.title}</h3>
                 <p>{event.teaser}</p>
                 <p>
