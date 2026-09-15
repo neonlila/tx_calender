@@ -8,7 +8,7 @@ use Neon\TxCalender\Controller\EventController;
 
 ExtensionUtility::configurePlugin(
     'TxCalender',
-    'List',
+    'EventList',
     [
         EventController::class => ['list', 'filter', 'show', 'exportIcal'],
     ],

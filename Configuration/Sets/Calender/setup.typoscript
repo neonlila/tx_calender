@@ -1,4 +1,4 @@
-plugin.tx_calender {
+plugin.tx_txcalender_eventlist {
     view {
         templateRootPaths {
             10 = EXT:tx_calender/Resources/Private/Templates/
@@ -16,4 +16,12 @@ plugin.tx_calender {
     settings {
         itemsPerPage = 15
     }
+}
+
+tt_content.list.20.tx_txcalender_eventlist = USER
+tt_content.list.20.tx_txcalender_eventlist {
+    userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+    extensionName = TxCalender
+    pluginName = EventList
+    vendorName = Neon
 }
