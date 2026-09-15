@@ -6,6 +6,8 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+
+use Neon\TxCalender\Domain\Model\Dto\EventFilter;
 use Neon\TxCalender\Domain\Repository\EventRepository;
 
 class EventController extends ActionController {
@@ -14,21 +16,23 @@ class EventController extends ActionController {
         private readonly ConnectionPool $connectionPool
     ) {}
 
-   public function listAction(): ResponseInterface {
-        // Query sys_category directly via QueryBuilder
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_category');
-        $categories = $queryBuilder
-            ->select('uid', 'title')
-            ->from('sys_category')
-            ->where(
-                $queryBuilder->expr()->eq('sys_language_uid', 0)
-            )
-            ->orderBy('title', 'ASC')
-            ->executeQuery()
-            ->fetchAllAssociative();
+  public function listAction(?EventFilter $filter = null): ResponseInterface {
+    if ($filter === null || $filter->isEmpty()) {
+        $events = $this->eventRepository->findAll();
+    } else {
+        $events = $this->eventRepository->findByFilter(
+            $filter->getStartDate() ? new \DateTime($filter->getStartDate()) : null,
+            $filter->getEndDate() ? new \DateTime($filter->getEndDate()) : null,
+            $filter->getCategories()
+        );
+    }
 
-        $this->view->assign('categories', $categories);
-        return $this->htmlResponse();
+    $this->view->assignMultiple([
+        'events' => $events,
+        'filter' => $filter,
+    ]);
+
+    return $this->htmlResponse();
     }
 
     /**

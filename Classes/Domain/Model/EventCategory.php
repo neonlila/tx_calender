@@ -1,6 +1,6 @@
 <?php
 
-namespace Neon\TxCalender\Domain\Modal;
+namespace Neon\TxCalender\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
