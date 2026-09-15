@@ -85,10 +85,12 @@
         <f:for each="{events}" as="event">
             <article class="event-card">
                 <h3>{event.title}</h3>
+                <p>{event.teaser}</p>
                 <p>
                     <time datetime="{event.startDate -> f:format.date(format: 'c')}">
                         {event.startDate -> f:format.date(format: 'd.m.Y H:i')}
-                    </time>
+                    </time> <br/>
+                    {event.location}
                 </p>
                 <f:link.action action="exportIcal" arguments="{event: event.uid}" class="btn-ical">
                     Download .ics

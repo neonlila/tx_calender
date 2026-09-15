@@ -26,6 +26,28 @@ return [
                 'required' => true,
             ],
         ],
+        'teaser' => [
+            'label' => 'Teaser',
+            'config' => [
+                'type' => 'text',
+                'cols' => 40,
+                'rows' => 5,
+            ],
+        ],
+        'description' => [
+            'label' => 'Description',
+            'config' => [
+                'type' => 'text',
+                'cols' => 40,
+                'rows' => 10,
+            ],
+        ],
+        'location' => [
+            'label' => 'Location',
+            'config' => [
+                'type' => 'input',
+            ],
+        ],
         'start_date' => [
             'label' => 'Start Date/Time',
             'config' => [
@@ -61,7 +83,7 @@ return [
         ],
     ],
     'types' => [
-        '0' => ['showitem' => 'title, start_date, end_date, is_recurring, recurrence_type'],
+        '0' => ['showitem' => 'title, start_date, end_date, is_recurring, recurrence_type, teaser, description, location'],
     ],
 ];
 

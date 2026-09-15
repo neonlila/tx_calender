@@ -51,6 +51,8 @@ class EventController extends ActionController {
             return [
                 'uid' => $event->getUid(),
                 'title' => $event->getTitle(),
+                'teaser' => $event->getTeaser(),
+                'description' => $event->getDescription(),
                 'startDate' => $event->getStartDate()?->format('d.m.Y H:i'),
                 'startDateIso' => $event->getStartDate()?->format('c'),
             ];
